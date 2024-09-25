@@ -4,7 +4,7 @@ import { NextResponse } from 'next/server';
 //export const dynamic = 'force-static'
 
 export async function GET() {
-    const apiKey = process.env.THE_NEWS_API_KEY;
+    const apiKey: string = process.env.THE_NEWS_API_KEY;
 
     const params = new URLSearchParams({
         api_token: apiKey,

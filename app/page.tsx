@@ -2,7 +2,7 @@
 
 export default async function Home() {
 
-    let data = await fetch('http://localhost:3000/api/headlines', { cache: 'no-store' })
+    let data = await fetch('http://localhost:3000/api/headlines')
     let articles = await data.json()
     console.log(articles);
     
@@ -10,7 +10,7 @@ export default async function Home() {
 
     return (
         <div>
-            <h1>News Items</h1>
+            
             
         </div>
     );
