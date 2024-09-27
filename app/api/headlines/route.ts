@@ -8,15 +8,18 @@ export async function GET() {
 
     const params = new URLSearchParams({
         api_token: apiKey!,
-        locale: 'us',
-        sort: 'published_on',
-        exclude_categories: 'sports, food, travel, entertainment',
+        //locale: 'us',
+        domains: 'axios.com',
+        categories: 'general',
     });
 
     try {
+        // Remove cache: 'no-store' when done testing to limit API calls
         const response = await fetch(
             `https://api.thenewsapi.com/v1/news/top?${params}`
         );
+        // Uncomment for no caching
+        //const response = await fetch(`https://api.thenewsapi.com/v1/news/top?${params}`, {cache: 'no-store'});
 
         if (!response.ok) {
             throw new Error('Network response was not ok');

@@ -27,9 +27,13 @@ export default function RootLayout({
         <html lang='en'>
             <body
                 className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col`}>
-                <header className='p-3 bg-slate-800 text-white text-lg font-bold'>Birdseye</header>
-                <div className='bg-red-200 min-h-screen'>{children}</div>
-                <footer className='p-2 bg-green-200'>Copyright: Galen Ciszek 2024</footer>
+                <header className='p-3 bg-slate-800 text-white text-lg font-bold'>
+                    HackedNews
+                </header>
+                <div className='bg-slate-500 min-h-screen'>{children}</div>
+                <footer className='p-2 bg-slate-900 text-white text-center'>
+                    Copyright: Galen Ciszek 2024
+                </footer>
             </body>
         </html>
     );
