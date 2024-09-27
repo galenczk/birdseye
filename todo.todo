@@ -3,6 +3,7 @@
 ☐ Find and interface a LLM API (what does token limit mean for article length?)
 ☐ Create an input field or similar to interact with LLM
 ☐ Generate reader page programatically from article URL
+☐ Lift safety controls on Gemini
 
 
 
@@ -11,3 +12,5 @@ Nice to haves:
     ☐ Make article title a link to original
     ☐ Create TypeScript Interface for Article and Article Response
     ☐ Create Topics Nav Bar that returns articles of different subjects
+    ☐ Arrows to page back and forth through next 3 articles
+    

@@ -11,7 +11,7 @@ export default async function Home() {
             <div>Topics Nav Bar</div>
             <div className='flex mt-8 bg-red-400 mx-24 justify-between'>
                 {articles.data.map((article: any, key: string) => (
-                    <div id={key} className='p-4 w-1/4'>
+                    <div key={key} className='p-4 w-1/4'>
                         <img src={article.image_url} width={400} height={300}/>
                         <div className='h-2' />
                         <Link href={`/articles/${key +1}`} className='bg-blue-400'>{article.title}</Link>

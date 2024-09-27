@@ -43,7 +43,6 @@ async function scrapeArticleContent(url: string){
 export async function POST(request: Request) {
     try {
         const { url } = await request.json();
-        console.log(url);
         
         if (!url) {
             return NextResponse.json(
