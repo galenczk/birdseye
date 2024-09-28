@@ -1,9 +1,12 @@
 ✔ Render articles as thumbnails on page @done(24-09-26 19:24)
 ✔ Find a domain source for reliable free content with consistent tags for scrapping @done(24-09-26 19:24)
-☐ Find and interface a LLM API (what does token limit mean for article length?)
-☐ Create an input field or similar to interact with LLM
+✔ Find and interface a LLM API (what does token limit mean for article length?) @done(24-09-27 22:09)
+✔ Create an input field or similar to interact with LLM @done(24-09-27 22:09)
+✔ Lift safety controls on Gemini @done(24-09-27 22:16)
 ☐ Generate reader page programatically from article URL
-☐ Lift safety controls on Gemini
+☐ Button to load article text into first part of prompt
+☐ Button to summarize article content
+☐ GeminiChat generates HTML instead of text in a form box
 
 
 
@@ -11,6 +14,7 @@ Nice to haves:
     ☐ Create font buttons to change size of font.
     ☐ Make article title a link to original
     ☐ Create TypeScript Interface for Article and Article Response
+    ☐ Create TS interface for messages
     ☐ Create Topics Nav Bar that returns articles of different subjects
     ☐ Arrows to page back and forth through next 3 articles
     

@@ -6,7 +6,21 @@ let article = `The sprawling business empire created by tribal leaders in northe
 const title =
     'Desperate Times Led Wisconsin Tribe to High-Interest Lending, Dubious Partnerships and Legal Jeopardy';
 
-const sections = article.split('\n\n');
+//const geminiTest = `The old clock tower chimed midnight, its solemn toll echoing across the deserted cobblestone square. Amelia, huddled in the shadows of a crumbling fountain, clutched her worn leather satchel close. The air was thick with anticipation, a tangible tension that hummed through the night. Tonight was the night.\n\nTonight, she would steal the Star of Atheria, a legendary gem said to grant its possessor unimaginable power. It had been hidden in the city's museum for centuries, guarded by an intricate security system and a battalion of guards. But Amelia, a master thief known only as \"The Nightingale,\" had a plan.\n\nWith practiced ease, she bypassed the laser grids and pressure plates, her movements as silent as the shadows themselves. The air was thick with dust and the scent of ancient parchment. She reached the vault, its massive steel door intimidatingly still.\n\nThe lock was a marvel of intricate craftsmanship, but Amelia had studied it for weeks, memorizing its mechanisms. She worked with deft fingers, the click of each tumbler echoing in the silent chamber. It was the final lock that gave her pause. It was a unique, digital combination, a recent addition, presumably to deter modern thieves.\n\nAmelia's heart pounded against her ribs. This was her chance, her last chance. She took a deep breath, closed her eyes, and entered the sequence she had memorized. The digital lock clicked open with a satisfying whir.\n\nInside the vault, nestled on a velvet cushion, lay the Star of Atheria. Its brilliance, even in the darkness, was blinding. A wave of heat emanated from it, a palpable energy that seemed to sing. Amelia reached out to touch it, her heart hammering against her ribs.\n\nSuddenly, a voice boomed behind her. \"You should have known better than to try and steal from the city's heart.\"\n\nAmelia spun around, her hand instinctively reaching for the hidden blade in her boot. A towering figure stood in the shadows, his face hidden beneath a hood. He moved with an unnerving grace, his eyes glowing with a strange light.\n\n\"Who are you?\" she demanded, her voice trembling slightly.\n\nThe figure chuckled, a low, chilling sound that sent shivers down her spine. \"I am the guardian of the Star,\" he said, his voice like a whisper, \"and I will not allow it to be stolen.\"\n\nAmelia’s heart sank. The city's rumors about the Star were true. It wasn't just a jewel; it had a protector. But she had come too far, risked too much, to give up now. She pulled out the blade, its glint reflecting in the Star's light. \n\n\"Then we shall fight,\" she said, her voice resolute, \"but the Star belongs to no one.\" \n`
+
+const sections = formatArticle(article)
+
+function formatArticle(article: string): string[]{
+    const sections = article.split('\n\n')
+    return sections
+}
+
+function formatGeminiAnswer(answer: string): string[]{
+    answer.replace('\"', "'")
+    let sections = answer.split('\n\n')
+
+    return sections
+}
 
 export default function ArticlePage() {
 
@@ -16,7 +30,6 @@ export default function ArticlePage() {
 
 
     const handleSubmit = async (event: React.FormEvent) => {
-        console.log(input);
         
         event.preventDefault()
         setLoading(true);        
@@ -33,11 +46,19 @@ export default function ArticlePage() {
                 },
                 body: JSON.stringify({ prompt: input }),
             });
+            
+            
+            let geminiAnswer = formatGeminiAnswer(await response.text());
+            
+            //let geminiAnswer = response.text()
+            for (let index = 0; index < geminiAnswer.length; index++) {
+                setMessages((prevMessages) => [...prevMessages, { role: 'assistant', content: geminiAnswer[index] },]);
+            }
+            
 
-            const geminiAnswer = response.text();
-            console.log(geminiAnswer);
+            // This is used to test with geminiTest above.
+            //setMessages((prevMessages) => [...prevMessages, {role: 'assistant', content: geminiTest}])
 
-            setMessages((prevMessages) => [...prevMessages, {role: 'assistant', content: geminiAnswer}])
         } catch (error) {
             console.error('Error fetching the Gemini response: ', error);
         } finally {
@@ -70,12 +91,12 @@ export default function ArticlePage() {
                 </div>
                 {/* Gemini chat interface */}
                 <div className='w-1/2 bg-red-400'>
-                    <div className='bg-slate-500 h-3/4 w-3/4 mx-auto p-4'>
+                    <div className='bg-slate-700 h-3/4 w-3/4 mx-auto p-4'>
                         <h2 className='text-center text-white mb-4'>
                             Gemini Chat
                         </h2>
 
-                        <div className='chat-messages bg-white h-24 overflow-y-scroll p-2 mb-4 rounded-lg'>
+                        <div className='chat-messages bg-white h-1/2 overflow-y-scroll p-2 mb-4 rounded-lg'>
                             {messages.map((message, index) => (
                                 <div
                                     key={index}
@@ -87,8 +108,8 @@ export default function ArticlePage() {
                                     <span
                                         className={
                                             message.role === 'user'
-                                                ? 'text-blue-500'
-                                                : 'text-green-500'
+                                                ? 'text-blue-400 text-sm mr-2'
+                                                : 'text-black font-bold'
                                         }>
                                         {message.content}
                                     </span>
@@ -97,7 +118,7 @@ export default function ArticlePage() {
                         </div>
 
                         {/* Chat input */}
-                        <form onSubmit={handleSubmit} className='flex'>
+                        <form onSubmit={handleSubmit} className='flex h-24'>
                             <input
                                 type='text'
                                 //value={input}
