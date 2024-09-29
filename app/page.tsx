@@ -1,8 +1,12 @@
 import Link from 'next/link';
 
 export default async function Home() {
+    
     let data = await fetch('http://localhost:3000/api/headlines')
-    //let data = await fetch('http://localhost:3000/api/headlines', {cache: 'no-store'});
+    
+    //let data = await fetch('http://localhost:3000/api/headlines', {cache: 'no-cache'});
+    
+    
     let articles = await data.json();
     console.log(articles);
     

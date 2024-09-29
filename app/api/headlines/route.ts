@@ -1,8 +1,7 @@
 // app/api/fetch-data/route.ts
 import { NextResponse } from 'next/server';
 
-//export const dynamic = 'force-static'
-
+// Returns 3 articles from The News API
 export async function GET() {
     const apiKey: string | undefined = process.env.THE_NEWS_API_KEY;
 
@@ -18,8 +17,9 @@ export async function GET() {
         const response = await fetch(
             `https://api.thenewsapi.com/v1/news/top?${params}`
         );
+        
         // Uncomment for no caching
-        //const response = await fetch(`https://api.thenewsapi.com/v1/news/top?${params}`, {cache: 'no-store'});
+        //const response = await fetch(`https://api.thenewsapi.com/v1/news/top?${params}`, {cache: 'no-cache'});
 
         if (!response.ok) {
             throw new Error('Network response was not ok');
