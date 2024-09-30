@@ -4,12 +4,7 @@ import * as cheerio from 'cheerio';
 
 async function scrapeArticleContent(url: string){
     const response = await fetch(url, {
-        method: 'GET',
-        headers: {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
-            Referer: 'https://www.axios.com',
-            Cookie: '__cf_bm=<your cookie value here>',
-        },
+        method: 'GET'
     });
 
     if (!response.ok) {
@@ -22,16 +17,22 @@ async function scrapeArticleContent(url: string){
 
     const contentElements = $("*[data-pp-blocktype='copy']");
 
-    const title = $('h1.opener__hed').text().trim(); // `.trim()` removes extra spaces
+    let title = $('h1.opener__hed').text().trim(); // `.trim()` removes extra spaces
+    
+    /* 
+    if (!title){
+       let title = $('h1.custom-opener__hed').text().trim();
+    } 
+       */   
 
-    const content =
+    const singleArticleContent =
         contentElements
             .map((i, el) => $(el).text())
             .get()
             .join('\n\n') || 'Content not found.'; // Join texts with line breaks
 
     // Return the extracted content
-    return { title, content };
+    return { title, singleArticleContent };
 }
 
 

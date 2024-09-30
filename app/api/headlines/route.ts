@@ -8,7 +8,7 @@ export async function GET() {
     const params = new URLSearchParams({
         api_token: apiKey!,
         //locale: 'us',
-        domains: 'axios.com',
+        domains: 'propublica.org',
         categories: 'general',
     });
 

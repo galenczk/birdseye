@@ -17,4 +17,6 @@ Nice to haves:
     ☐ Create TS interface for messages
     ☐ Create Topics Nav Bar that returns articles of different subjects
     ☐ Arrows to page back and forth through next 3 articles
+    ☐ Do something with the load state on the geminichat
+    ☐ Look into filtering for Cheerio scraping to grab titles with '*__hed' type class
     
