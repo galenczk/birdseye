@@ -1,5 +1,6 @@
+
 // Gets a single article content from the 3 pulled from TNAPI
-async function getArticle(articleKey) {
+async function getArticle(articleKey: number) {
     const multiArticleData = await fetch('http://localhost:3000/api/headlines')
     const multiArticles = await multiArticleData.json();
     // Change 0 to articleKey for dynamism

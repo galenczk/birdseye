@@ -1,12 +1,7 @@
-✔ Render articles as thumbnails on page @done(24-09-26 19:24)
-✔ Find a domain source for reliable free content with consistent tags for scrapping @done(24-09-26 19:24)
-✔ Find and interface a LLM API (what does token limit mean for article length?) @done(24-09-27 22:09)
-✔ Create an input field or similar to interact with LLM @done(24-09-27 22:09)
-✔ Lift safety controls on Gemini @done(24-09-27 22:16)
-☐ Generate reader page programatically from article URL
+☐ GeminiChat generates HTML instead of text in a form box
 ☐ Button to load article text into first part of prompt
 ☐ Button to summarize article content
-☐ GeminiChat generates HTML instead of text in a form box
+☐ Pull by-line from article 
 
 
 
@@ -19,4 +14,14 @@ Nice to haves:
     ☐ Arrows to page back and forth through next 3 articles
     ☐ Do something with the load state on the geminichat
     ☐ Look into filtering for Cheerio scraping to grab titles with '*__hed' type class
-    
+
+
+
+
+
+✔ Render articles as thumbnails on page @done(24-09-26 19:24)
+✔ Find a domain source for reliable free content with consistent tags for scrapping @done(24-09-26 19:24)
+✔ Find and interface a LLM API (what does token limit mean for article length?) @done(24-09-27 22:09)
+✔ Create an input field or similar to interact with LLM @done(24-09-27 22:09)
+✔ Lift safety controls on Gemini @done(24-09-27 22:16)
+✔ Generate reader page programatically from article URL @done(24-09-29 18:29)

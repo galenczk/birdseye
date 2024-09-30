@@ -2,6 +2,13 @@
 
 import { useState } from 'react';
 
+function formatGeminiAnswer(answer: string): string[] {
+    answer.replace('"', "'");
+    let sections = answer.split('\n\n');
+
+    return sections;
+}
+
 export default function GeminiChat() {
     // States for geminichat interface
     const [messages, setMessages] = useState([]);
