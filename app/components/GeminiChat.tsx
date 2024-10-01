@@ -2,13 +2,6 @@
 
 import { useState } from 'react';
 
-function formatGeminiAnswer(answer: string): string[] {
-    answer.replace('"', "'");
-    let sections = answer.split('\n\n');
-
-    return sections;
-}
-
 export default function GeminiChat() {
     // States for geminichat interface
     const [messages, setMessages] = useState([]);
@@ -33,18 +26,16 @@ export default function GeminiChat() {
                 body: JSON.stringify({ prompt: input }),
             });
 
-            let geminiAnswer = formatGeminiAnswer(await response.text());
+            let geminiAnswerSections = await response.json();
+            console.log(geminiAnswerSections);
 
             //let geminiAnswer = response.text()
-            for (let index = 0; index < geminiAnswer.length; index++) {
-                setMessages((prevMessages) => [
-                    ...prevMessages,
-                    { role: 'assistant', content: geminiAnswer[index] },
-                ]);
-            }
+            for (let index = 0; index < geminiAnswerSections.length; index++) {
+                console.log(geminiAnswerSections[index]);
 
-            // This is used to test with geminiTest above.
-            //setMessages((prevMessages) => [...prevMessages, {role: 'assistant', content: geminiTest}])
+                setMessages((prevMessages) => [...prevMessages, { role: 'assistant', content: geminiAnswerSections[index] }]);
+            }
+            setInput('');
         } catch (error) {
             console.error('Error fetching the Gemini response: ', error);
         } finally {
@@ -58,26 +49,32 @@ export default function GeminiChat() {
             {/* Gemini chat interface */}
             <div className=''>
                 <div className=''>
-                    <h2 className='text-center text-white mb-4'>
-                        Gemini Chat New
-                    </h2>
+                    <h2 className='text-center text-white mb-4'>Gemini Chat New</h2>
 
                     <div className='bg-white h-96 overflow-y-scroll p-2 mb-4 rounded-lg'>
                         {messages.map((message, index) => (
-                            <div
-                                key={index}
-                                className={
-                                    message.role === 'user'
-                                        ? 'text-right'
-                                        : 'text-left'
-                                }>
-                                <span
-                                    className={
-                                        message.role === 'user'
-                                            ? 'text-blue-400 text-sm mr-2'
-                                            : 'text-black font-bold'
-                                    }>
-                                    {message.content}
+                            <div key={index} className={message.role === 'user' ? 'text-right' : 'text-left'}>
+                                <span key={index} className={message.role === 'user' ? 'text-blue-400 text-sm mr-2' : 'text-black font-bold'}>
+                                    {(() => {
+                                        if (message.role === 'user') {
+                                            return <p>{message.content}</p>;
+                                        } else {
+                                            if (message.content.type === 'paragraph') {
+                                                return <p>{message.content.content}</p>;
+                                            } else if (message.content.type === 'bullet') {
+                                                return (
+                                                    <ul>
+                                                        {message.content.content.map((listItem, index) => (
+                                                            <li key={index} className='ml-4'>
+                                                                - {listItem}
+                                                            </li>
+                                                        ))}
+                                                    </ul>
+                                                );
+                                            }
+                                            return null;
+                                        }
+                                    })()}
                                 </span>
                             </div>
                         ))}
@@ -92,9 +89,7 @@ export default function GeminiChat() {
                             placeholder='Type your message...'
                             className='w-full p-2 rounded-lg'
                         />
-                        <button
-                            type='submit'
-                            className='ml-2 px-4 py-2 bg-blue-500 text-white rounded-lg'>
+                        <button type='submit' className='ml-2 px-4 py-2 bg-blue-500 text-white rounded-lg'>
                             Send
                         </button>
                     </form>
