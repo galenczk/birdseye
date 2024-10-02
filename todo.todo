@@ -1,19 +1,25 @@
-☐ GeminiChat generates HTML instead of text in a form box
-☐ Button to load article text into first part of prompt
+✔ GeminiChat generates HTML instead of text in a form box @done(24-10-01 17:51)
 ☐ Button to summarize article content
+☐ Button to explain the history of an article
+☐ Button to recommend further reading on topics covered in article
 ☐ Pull by-line from article 
+☐ Pull headlines from article always (Look into filtering for Cheerio scraping to grab titles with '*__hed' type class)
+
 
 
 
 Nice to haves:
     ☐ Create font buttons to change size of font.
     ☐ Make article title a link to original
-    ☐ Create TypeScript Interface for Article and Article Response
-    ☐ Create TS interface for messages
+    ☐ Create TypeScript Interface for Article and Article Response, and all other objects that get consumed
     ☐ Create Topics Nav Bar that returns articles of different subjects
     ☐ Arrows to page back and forth through next 3 articles
     ☐ Do something with the load state on the geminichat
-    ☐ Look into filtering for Cheerio scraping to grab titles with '*__hed' type class
+    ☐ Scrape article from any source with LLM?
+
+
+
+
 
 
 
