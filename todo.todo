@@ -5,6 +5,8 @@
 ☐ Pull by-line from article 
 ☐ Pull headlines from article always (Look into filtering for Cheerio scraping to grab titles with '*__hed' type class)
 
+☐ Change messages useState back to non-static
+
 
 
 

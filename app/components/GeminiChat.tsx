@@ -18,6 +18,7 @@ export default function GeminiChat(props) {
     const { title, formattedArticle } = props.content;
 
     // States for geminichat interface
+    // Message is static for styling work. Change this
     const [messages, setMessages] = useState([
         { role: 'user', content: { type: 'custom', content: 'Here is a user prompt' } },
         {
@@ -110,7 +111,7 @@ export default function GeminiChat(props) {
                         </div>
                     </div>
                     <div className='bg-zinc-600 h-96 overflow-y-scroll p-2 mb-4 rounded-lg'>
-                        {messages.map((message, index) => (
+                        {messages.map((message: any, index: number) => (
                             <div key={index} className={message.role === 'user' ? 'text-right' : 'text-left'}>
                                 <div key={index} className={message.role === 'user' ? 'text-slate-300' : 'text-zinc-300 font-bold'}>
                                     {(() => {
@@ -140,7 +141,7 @@ export default function GeminiChat(props) {
                                                 // Bulleted list in response
                                                 return (
                                                     <ul key={index}>
-                                                        {message.content.content.map((listItem, index) => (
+                                                        {message.content.content.map((listItem: string, index: number) => (
                                                             <div key={index} className='flex'>
                                                                 <div>-</div>
                                                                 <li key={index} className='ml-2'>

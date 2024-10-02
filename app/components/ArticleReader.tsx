@@ -30,7 +30,7 @@ export default async function ArticleReader(props) {
 
     return (
         <>
-            <div className=''>
+            <div className='bg-slate-600'>
                 <div className=''>
                     <h1 className='p-4  text-white font-bold text-xl text-center'>{title}</h1>
                     <div className='text-center '>
@@ -39,7 +39,7 @@ export default async function ArticleReader(props) {
                     </div>
                     <div className='border-slate-800 border-b-2 w-3/4 mx-auto' />
                     <div className='text-justify'>
-                        {formattedArticle.map((section, key) => (
+                        {formattedArticle.map((section: string, key: number) => (
                             <p key={key} className='p-4  text-white'>
                                 {section}
                             </p>

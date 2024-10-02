@@ -33,7 +33,7 @@ export default async function ArticlePage({ params }) {
     //console.log({ title });
 
     return (
-        <>
+        <div>
             <div className='flex justify-around'>
                 <div id='ArticleReader' className='w-1/2 p-4'>
                     <ArticleReader content={{ title, formattedArticle }} />
@@ -42,6 +42,6 @@ export default async function ArticlePage({ params }) {
                     <GeminiChat content={{ title, formattedArticle }} />
                 </div>
             </div>
-        </>
+        </div>
     );
 }
