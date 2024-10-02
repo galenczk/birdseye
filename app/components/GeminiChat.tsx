@@ -1,9 +1,17 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 export default function GeminiChat(props) {
     const { title, formattedArticle } = props.content;
+
+    // This scrolls to the bottom of geminichat at each new message
+    const scrollRef = useRef<HTMLDivElement>(null);
+    useEffect(() => {
+        if (scrollRef.current){
+             scrollRef.current.scrollTop = scrollRef.current.scrollHeight
+        }
+    })
 
     // States for geminichat interface
     // Message is static for styling work. Change this
@@ -97,18 +105,18 @@ export default function GeminiChat(props) {
                 </div>
             </div>
             
-            <div className='bg-zinc-600 min-h-96 p-2 mb-4 rounded-lg flex flex-col'>
-                    <div className='h-96 overflow-y-scroll'>{messages.map((message: any, index: number) => (
+            <div ref={scrollRef} className='bg-zinc-600 overflow-y-scroll h-[30rem] p-2 mb-4 rounded-lg flex flex-col'>
+                    {messages.map((message: any, index: number) => (
                         <div key={index} className={message.role === 'user' ? 'ml-auto text-justify' : 'mr-auto text-justify'}>
                             <div className={message.role === 'user' ? 'text-zinc-300' : 'text-zinc-300 font-bold'}>
                                 {/* Render user and assistant messages */}
                                 {(() => {
                                     if (message.role === 'user') {
                                         // User prompt
-                                        return <p className='text-sm p-4 border-slate-400 border-2 rounded'>{message.content.content}</p>;
+                                        return <p className='text-sm p-4 m-4 border-slate-400 border-y-2 pl-24'>{message.content.content}</p>;
                                     } else {
                                         return (
-                                            <div>
+                                            <div className=''>
                                                 {message.content.type === 'headline' && <h2 className='text-lg'>{message.content.content}</h2>}
                                                 {message.content.type === 'break' && <br className='my-1' />}
                                                 {message.content.type === 'paragraph' && <p className='py-1'>{message.content.content}</p>}
@@ -128,8 +136,9 @@ export default function GeminiChat(props) {
                                 })()}
                             </div>
                         </div>
-                    ))}</div>
+                    ))}
                     
+                </div>  
 
                 <form onSubmit={handleSubmit} className='flex h-24 mt-auto'>
                     <input
@@ -143,7 +152,7 @@ export default function GeminiChat(props) {
                         Send
                     </button>
                 </form>
-            </div>
+            
         </div>
     );
 }
