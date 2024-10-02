@@ -49,7 +49,7 @@ export default async function ArticleReader(props) {
                             ***BY LINE***
                         </h2>
                         <h2 className='text-slate-400 mb-2'>
-                            © Copyright 2024 Pro Publica Inc.
+                            Copyright 2024 Pro Publica Inc.
                         </h2>
                     </div>
                     <div className='border-slate-800 border-b-2 w-3/4 mx-auto' />

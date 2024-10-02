@@ -4,7 +4,41 @@ import { useState } from 'react';
 
 export default function GeminiChat() {
     // States for geminichat interface
-    const [messages, setMessages] = useState([]);
+    const [messages, setMessages] = useState([
+        { role: 'user', content: 'Here is a user prompt' },
+        {
+            role: 'assistant',
+            content: {
+                type: 'headline',
+                content: " Generic Example of Bard's Response:",
+            },
+        },
+        {
+            role: 'assistant',
+            content: {
+                type: 'paragraph',
+                content: "Headline: [Relevant and descriptive headline based on the user's prompt]",
+            },
+        },
+        {
+            role: 'assistant',
+            content: {
+                type: 'paragraph',
+                content: 'Introduction: [Briefly introduce the topic and provide context for the response]',
+            },
+        },
+        {
+            role: 'assistant',
+            content: {
+                type: 'bullet',
+                content: [
+                    ' Bullet Point 1: [Clear and concise point, possibly with supporting details]',
+                    ' Bullet Point 2: [Another relevant point, possibly with examples or explanations]',
+                    ' Bullet Point 3: [Additional point that adds value to the response]',
+                ],
+            },
+        },
+    ]);
     const [input, setInput] = useState('');
     const [loading, setLoading] = useState(false);
 
@@ -13,6 +47,8 @@ export default function GeminiChat() {
         event.preventDefault();
         setLoading(true);
 
+        // Change this schema to include a type: and content:
+        // Type will determine article content being hidden from input
         const userMessage = { role: 'user', content: input };
 
         setMessages((prevMessages) => [...prevMessages, userMessage]);
@@ -27,15 +63,11 @@ export default function GeminiChat() {
             });
 
             let geminiAnswerSections = await response.json();
-            console.log(geminiAnswerSections);
 
             //let geminiAnswer = response.text()
             for (let index = 0; index < geminiAnswerSections.length; index++) {
-                console.log(geminiAnswerSections[index]);
-
                 setMessages((prevMessages) => [...prevMessages, { role: 'assistant', content: geminiAnswerSections[index] }]);
             }
-            setInput('');
         } catch (error) {
             console.error('Error fetching the Gemini response: ', error);
         } finally {
@@ -49,25 +81,40 @@ export default function GeminiChat() {
             {/* Gemini chat interface */}
             <div className=''>
                 <div className=''>
-                    <h2 className='text-center text-white mb-4'>Gemini Chat New</h2>
+                    <div className='flex flex-col'>
+                        <h2 className='text-center text-white text-lg'>News GPT Helper</h2>
+                        <h2 className='text-slate-400 mb-2 text-center text-sm'>Copyright 2024 Google Gemini</h2>
 
-                    <div className='bg-white h-96 overflow-y-scroll p-2 mb-4 rounded-lg'>
+                        <div className='mx-auto'>Buttons</div>
+                    </div>
+
+                    <div className='bg-zinc-600 h-96 overflow-y-scroll p-2 mb-4 rounded-lg'>
                         {messages.map((message, index) => (
                             <div key={index} className={message.role === 'user' ? 'text-right' : 'text-left'}>
-                                <span key={index} className={message.role === 'user' ? 'text-blue-400 text-sm mr-2' : 'text-black font-bold'}>
+                                <div key={index} className={message.role === 'user' ? 'text-slate-300' : 'text-zinc-300 font-bold'}>
                                     {(() => {
                                         if (message.role === 'user') {
-                                            return <p>{message.content}</p>;
+                                            // User prompt
+                                            return <p className='text-sm mt-2'>{message.content}</p>;
                                         } else {
-                                            if (message.content.type === 'paragraph') {
-                                                return <p>{message.content.content}</p>;
+                                            if (message.content.type === 'headline') {
+                                                // Headlines in response
+                                                return <h2 className='text-lg'>{message.content.content}</h2>;
+                                            } else if (message.content.type === 'paragraph') {
+                                                // Paragraphs in response
+                                                return <p className='py-1'>{message.content.content}</p>;
                                             } else if (message.content.type === 'bullet') {
+                                                // Bulleted list in response
                                                 return (
                                                     <ul>
                                                         {message.content.content.map((listItem, index) => (
-                                                            <li key={index} className='ml-4'>
-                                                                - {listItem}
-                                                            </li>
+                                                            <div className='flex'>
+                                                                <div>-</div>
+                                                                <li key={index} className='ml-2'>
+                                                                {listItem}
+                                                                </li>
+                                                            </div>
+                                                            
                                                         ))}
                                                     </ul>
                                                 );
@@ -75,7 +122,7 @@ export default function GeminiChat() {
                                             return null;
                                         }
                                     })()}
-                                </span>
+                                </div>
                             </div>
                         ))}
                     </div>
@@ -84,7 +131,7 @@ export default function GeminiChat() {
                     <form onSubmit={handleSubmit} className='flex h-24'>
                         <input
                             type='text'
-                            //value={input}
+                            value={input}
                             onChange={(e) => setInput(e.target.value)}
                             placeholder='Type your message...'
                             className='w-full p-2 rounded-lg'
