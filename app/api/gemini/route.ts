@@ -77,18 +77,19 @@ export async function POST(request: Request) {
     try {
         const { prompt } = await request.json();
 
-        /*
+        
         if (!prompt) {
             return NextResponse.json(
                 { error: 'Prompt is required' },
                 { status: 400 }
             );
         };
-        */
         
-        //const responseBody = await model.generateContent(prompt);
-        //const formattedAnswer = formatGeminiAnswer(responseBody.response.text())
+        
+        const responseBody = await model.generateContent(prompt);
+        const formattedAnswer = formatGeminiAnswer(responseBody.response.text())
 
+/*
         const testResponse = `## Generic Example of Bard's Response:
 
 **Headline:** [Relevant and descriptive headline based on the user's prompt]
@@ -114,11 +115,10 @@ export async function POST(request: Request) {
 **Disclaimer:** This is a generic example and the actual response will vary depending on the user's prompt and the context of the conversation.
 
 **Note:** Bard is still under development and its responses may change over time.`;
-
-        //console.log(formatGeminiAnswer(testResponse));
+*/
         
 
-        return NextResponse.json(testResponse);
+        return NextResponse.json(formattedAnswer);
        
     } catch (error: any) {
         return NextResponse.json({ error: error.message }, { status: 500 });

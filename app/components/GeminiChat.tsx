@@ -2,60 +2,53 @@
 
 import { useState } from 'react';
 
-async function summarizeArticle(){
-    return
-}
-
-async function explainHistory(){
-    return
-}
-
-async function recommendReading(){
-    return
-}
-
 export default function GeminiChat(props) {
     const { title, formattedArticle } = props.content;
 
     // States for geminichat interface
     // Message is static for styling work. Change this
-    const [messages, setMessages] = useState([
-        { role: 'user', content: { type: 'custom', content: 'Here is a user prompt' } },
-        {
-            role: 'assistant',
-            content: {
-                type: 'headline',
-                content: " Generic Example of Bard's Response:",
-            },
-        },
-        {
-            role: 'assistant',
-            content: {
-                type: 'paragraph',
-                content: "Headline: [Relevant and descriptive headline based on the user's prompt]",
-            },
-        },
-        {
-            role: 'assistant',
-            content: {
-                type: 'paragraph',
-                content: 'Introduction: [Briefly introduce the topic and provide context for the response]',
-            },
-        },
-        {
-            role: 'assistant',
-            content: {
-                type: 'bullet',
-                content: [
-                    ' Bullet Point 1: [Clear and concise point, possibly with supporting details]',
-                    ' Bullet Point 2: [Another relevant point, possibly with examples or explanations]',
-                    ' Bullet Point 3: [Additional point that adds value to the response]',
-                ],
-            },
-        },
-    ]);
+    const [messages, setMessages] = useState([]);
     const [input, setInput] = useState('');
     const [loading, setLoading] = useState(false);
+
+    async function summarizeArticle() {
+        setLoading(true);
+
+        const articleReference = props.content.formattedArticle;
+        const promptSuffix = `\n\n Please summarize this article in a simple and easy-to-read way.`;
+        const prompt = articleReference + promptSuffix;
+        console.log(prompt);
+
+        try {
+            const response = await fetch('http://localhost:3000/api/gemini', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ prompt: prompt }),
+            });
+
+            let geminiAnswerSections = await response.json();
+            console.log(geminiAnswerSections);
+
+            for (let index = 0; index < geminiAnswerSections.length; index++) {
+                setMessages((prevMessages) => [...prevMessages, { role: 'assistant', content: geminiAnswerSections[index] }]);
+            }
+            //setMessages((prevMessages) => [...prevMessages, { role: 'assistant', content: { type: 'break', content: '' } }]);
+        } catch (error) {
+            console.error('Error fetchign the Gemini response: ', error);
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    async function explainHistory() {
+        return;
+    }
+
+    async function recommendReading() {
+        return;
+    }
 
     // Handles geminichat prompt submissions
     const handleSubmit = async (event: React.FormEvent) => {
@@ -79,10 +72,10 @@ export default function GeminiChat(props) {
 
             let geminiAnswerSections = await response.json();
 
-            //let geminiAnswer = response.text()
             for (let index = 0; index < geminiAnswerSections.length; index++) {
                 setMessages((prevMessages) => [...prevMessages, { role: 'assistant', content: geminiAnswerSections[index] }]);
             }
+            //setMessages((prevMessages) => [...prevMessages, { role: 'assistant', content: { type: 'break', content: '' } }]);
         } catch (error) {
             console.error('Error fetching the Gemini response: ', error);
         } finally {
@@ -93,87 +86,63 @@ export default function GeminiChat(props) {
 
     return (
         <div>
-            {/* Gemini chat interface */}
-            <div className=''>
-                <div className=''>
-                    <div className='flex flex-col'>
-                        <h2 className='text-center text-white text-lg'>News GPT Helper</h2>
-                        <h2 className='text-slate-400 mb-2 text-center text-sm'>Copyright 2024 Google Gemini</h2>
+            <div className='flex flex-col'>
+                <h2 className='text-center text-white text-lg'>News GPT Helper</h2>
+                <h2 className='text-slate-400 mb-2 text-center text-sm'>Copyright 2024 Google Gemini</h2>
 
-                        <div className='flex mx-auto mb-2'>
-                            
-
-                            <button >Summarize Article</button>
-                            <button >Explain History of this Topic</button>
-                            <button >Recommend Further Reading</button>
-
-
-                        </div>
-                    </div>
-                    <div className='bg-zinc-600 h-96 overflow-y-scroll p-2 mb-4 rounded-lg'>
-                        {messages.map((message: any, index: number) => (
-                            <div key={index} className={message.role === 'user' ? 'text-right' : 'text-left'}>
-                                <div key={index} className={message.role === 'user' ? 'text-slate-300' : 'text-zinc-300 font-bold'}>
-                                    {(() => {
-                                        if (message.role === 'user') {
-                                            // User prompt
-                                            return (
-                                                <p key={index} className='text-sm mt-2'>
-                                                    {message.content.content}
-                                                </p>
-                                            );
-                                        } else {
-                                            if (message.content.type === 'headline') {
-                                                // Headlines in response
-                                                return (
-                                                    <h2 key={index} className='text-lg'>
-                                                        {message.content.content}
-                                                    </h2>
-                                                );
-                                            } else if (message.content.type === 'paragraph') {
-                                                // Paragraphs in response
-                                                return (
-                                                    <p key={index} className='py-1'>
-                                                        {message.content.content}
-                                                    </p>
-                                                );
-                                            } else if (message.content.type === 'bullet') {
-                                                // Bulleted list in response
-                                                return (
-                                                    <ul key={index}>
-                                                        {message.content.content.map((listItem: string, index: number) => (
-                                                            <div key={index} className='flex'>
+                <div className='flex mx-auto mb-2'>
+                    <button onClick={summarizeArticle}>Summarize Article</button>
+                    <button>Explain History of this Topic</button>
+                    <button>Recommend Further Reading</button>
+                </div>
+            </div>
+            
+            <div className='bg-zinc-600 min-h-96 p-2 mb-4 rounded-lg flex flex-col'>
+                    <div className='h-96 overflow-y-scroll'>{messages.map((message: any, index: number) => (
+                        <div key={index} className={message.role === 'user' ? 'ml-auto text-justify' : 'mr-auto text-justify'}>
+                            <div className={message.role === 'user' ? 'text-zinc-300' : 'text-zinc-300 font-bold'}>
+                                {/* Render user and assistant messages */}
+                                {(() => {
+                                    if (message.role === 'user') {
+                                        // User prompt
+                                        return <p className='text-sm p-4 border-slate-400 border-2 rounded'>{message.content.content}</p>;
+                                    } else {
+                                        return (
+                                            <div>
+                                                {message.content.type === 'headline' && <h2 className='text-lg'>{message.content.content}</h2>}
+                                                {message.content.type === 'break' && <br className='my-1' />}
+                                                {message.content.type === 'paragraph' && <p className='py-1'>{message.content.content}</p>}
+                                                {message.content.type === 'bullet' && (
+                                                    <ul>
+                                                        {message.content.content.map((listItem: string, listIndex: number) => (
+                                                            <div key={listIndex} className='flex'>
                                                                 <div>-</div>
-                                                                <li key={index} className='ml-2'>
-                                                                    {listItem}
-                                                                </li>
+                                                                <li className='ml-2'>{listItem}</li>
                                                             </div>
                                                         ))}
                                                     </ul>
-                                                );
-                                            }
-                                            return null;
-                                        }
-                                    })()}
-                                </div>
+                                                )}
+                                            </div>
+                                        );
+                                    }
+                                })()}
                             </div>
-                        ))}
-                    </div>
+                        </div>
+                    ))}</div>
+                    
 
-                    {/* Chat input */}
-                    <form onSubmit={handleSubmit} className='flex h-24'>
-                        <input
-                            type='text'
-                            value={input}
-                            onChange={(e) => setInput(e.target.value)}
-                            placeholder='Type your message...'
-                            className='w-full p-2 rounded-lg'
-                        />
-                        <button type='submit' className='ml-2 px-4 py-2 bg-blue-500 text-white rounded-lg'>
-                            Send
-                        </button>
-                    </form>
-                </div>
+                <form onSubmit={handleSubmit} className='flex h-24 mt-auto'>
+                    <input
+                        type='text'
+                        value={input}
+                        onChange={(e) => setInput(e.target.value)}
+                        placeholder='Type your message...'
+                        className='w-full p-2 rounded-lg'
+                    />
+                    <button type='submit' className='ml-2 px-4 py-2 bg-blue-500 text-white rounded-lg'>
+                        Send
+                    </button>
+                </form>
             </div>
         </div>
     );
