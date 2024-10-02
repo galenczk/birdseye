@@ -1,0 +1,28 @@
+[
+  { role: 'assistant',
+    content:{type: 'headline', content: " Generic Example of Bard's Response:" }
+},
+  { role: 'assistant',
+    content:{
+    type: 'paragraph',
+    content: "Headline: [Relevant and descriptive headline based on the user's prompt]"
+  }
+},
+  { role: 'assistant'
+  content: {
+    type: 'paragraph',
+    content: 'Introduction: [Briefly introduce the topic and provide context for the response]'
+  },
+},
+{role: 'assistant', 
+content:
+  {
+    type: 'bullet',
+    content: [
+      ' Bullet Point 1: [Clear and concise point, possibly with supporting details]',
+      ' Bullet Point 2: [Another relevant point, possibly with examples or explanations]',
+      ' Bullet Point 3: [Additional point that adds value to the response]'
+    ]
+  }
+}
+]

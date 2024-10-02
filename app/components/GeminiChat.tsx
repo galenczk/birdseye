@@ -2,10 +2,24 @@
 
 import { useState } from 'react';
 
-export default function GeminiChat() {
+async function summarizeArticle(){
+    return
+}
+
+async function explainHistory(){
+    return
+}
+
+async function recommendReading(){
+    return
+}
+
+export default function GeminiChat(props) {
+    const { title, formattedArticle } = props.content;
+
     // States for geminichat interface
     const [messages, setMessages] = useState([
-        { role: 'user', content: 'Here is a user prompt' },
+        { role: 'user', content: { type: 'custom', content: 'Here is a user prompt' } },
         {
             role: 'assistant',
             content: {
@@ -49,7 +63,7 @@ export default function GeminiChat() {
 
         // Change this schema to include a type: and content:
         // Type will determine article content being hidden from input
-        const userMessage = { role: 'user', content: input };
+        const userMessage = { role: 'user', content: { type: 'custom', content: input } };
 
         setMessages((prevMessages) => [...prevMessages, userMessage]);
 
@@ -77,7 +91,7 @@ export default function GeminiChat() {
     };
 
     return (
-        <>
+        <div>
             {/* Gemini chat interface */}
             <div className=''>
                 <div className=''>
@@ -85,9 +99,16 @@ export default function GeminiChat() {
                         <h2 className='text-center text-white text-lg'>News GPT Helper</h2>
                         <h2 className='text-slate-400 mb-2 text-center text-sm'>Copyright 2024 Google Gemini</h2>
 
-                        <div className='mx-auto'>Buttons</div>
-                    </div>
+                        <div className='flex mx-auto mb-2'>
+                            
 
+                            <button >Summarize Article</button>
+                            <button >Explain History of this Topic</button>
+                            <button >Recommend Further Reading</button>
+
+
+                        </div>
+                    </div>
                     <div className='bg-zinc-600 h-96 overflow-y-scroll p-2 mb-4 rounded-lg'>
                         {messages.map((message, index) => (
                             <div key={index} className={message.role === 'user' ? 'text-right' : 'text-left'}>
@@ -95,26 +116,37 @@ export default function GeminiChat() {
                                     {(() => {
                                         if (message.role === 'user') {
                                             // User prompt
-                                            return <p className='text-sm mt-2'>{message.content}</p>;
+                                            return (
+                                                <p key={index} className='text-sm mt-2'>
+                                                    {message.content.content}
+                                                </p>
+                                            );
                                         } else {
                                             if (message.content.type === 'headline') {
                                                 // Headlines in response
-                                                return <h2 className='text-lg'>{message.content.content}</h2>;
+                                                return (
+                                                    <h2 key={index} className='text-lg'>
+                                                        {message.content.content}
+                                                    </h2>
+                                                );
                                             } else if (message.content.type === 'paragraph') {
                                                 // Paragraphs in response
-                                                return <p className='py-1'>{message.content.content}</p>;
+                                                return (
+                                                    <p key={index} className='py-1'>
+                                                        {message.content.content}
+                                                    </p>
+                                                );
                                             } else if (message.content.type === 'bullet') {
                                                 // Bulleted list in response
                                                 return (
-                                                    <ul>
+                                                    <ul key={index}>
                                                         {message.content.content.map((listItem, index) => (
-                                                            <div className='flex'>
+                                                            <div key={index} className='flex'>
                                                                 <div>-</div>
                                                                 <li key={index} className='ml-2'>
-                                                                {listItem}
+                                                                    {listItem}
                                                                 </li>
                                                             </div>
-                                                            
                                                         ))}
                                                     </ul>
                                                 );
@@ -142,6 +174,6 @@ export default function GeminiChat() {
                     </form>
                 </div>
             </div>
-        </>
+        </div>
     );
 }
