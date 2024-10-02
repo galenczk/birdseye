@@ -1,6 +1,12 @@
 import ArticleReader from '../../components/ArticleReader';
 import GeminiChat from '../../components/GeminiChat';
 
+interface Params {
+    params: {
+        articleKey: number;
+    };
+}
+
 // Gets a single article content from the 3 pulled from TNAPI
 async function getArticle(articleKey: number) {
     const multiArticleData = await fetch('http://localhost:3000/api/headlines');
@@ -26,7 +32,7 @@ function formatArticle(article: string): string[] {
     return sections;
 }
 
-export default async function ArticlePage({ params }) {
+export default async function ArticlePage({ params }: Params) {
     //console.log(params.articleKey);
 
     const { title, formattedArticle } = await getArticle(params.articleKey);
